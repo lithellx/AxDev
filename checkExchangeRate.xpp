@@ -1,0 +1,17 @@
+public static void checkExchangeRate()
+{
+  ExchangeRate ExchangeRate;
+  
+  date dateSys = systemDateGet();
+  str dayStr = dayName(dayOfWk(dateSys));
+  
+  if(dayStr == "Friday" || dayStr == "Saturday" || dayStr == "Sunday")
+    return;
+  
+  //info(dayStr);
+  
+  select ExchangeRate where ExchangeRate.ValidFrom == dateSys;
+  
+  if(!ExchangeRate)
+    info("Döviz kuru bulunamadı!");
+}
