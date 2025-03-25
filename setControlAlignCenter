@@ -1,0 +1,32 @@
+private void setControlAlignCenter(FormControl _control)
+{
+    FormStringControl stringControl;
+    int formWidth, textWidth, newLeft, fontSize;
+
+    stringControl = _control;
+    formWidth = element.design().widthValue();
+    fontSize = stringControl.fontSize();
+    if(fontSize == 0) 
+        fontSize = 9;
+
+    textWidth = strLen(stringControl.text()) * fontSize;
+
+    newLeft = (formWidth - textWidth) / 2;
+    newLeft = newLeft < 0 ? 0 : newLeft;
+
+    _control.left(newLeft);
+}
+
+example:
+
+public void init()
+{
+    super();
+    this.setControlAlignCenter(StaticText1);
+}
+
+public void resize(int _width, int _height)
+{
+    super(_width, _height);
+    this.setControlAlignCenter(StaticText1);
+}
