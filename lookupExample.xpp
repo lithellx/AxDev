@@ -1,0 +1,24 @@
+public void lookup()
+{
+    SysTableLookup          sysTableLookup = SysTableLookup::newParameters(tableNum(ERP_AssetTable),this);
+    Query                   query;
+    QueryBuildDataSource    qbds_ERP_AssetTable;
+    QueryBuildRange         qbr_AssetGroupId, qbr_AssetStatus;
+
+    query          = new Query();
+    qbds_ERP_AssetTable = query.addDataSource(tableNum(ERP_AssetTable));
+
+    qbr_AssetGroupId = qbds_ERP_AssetTable.addRange(fieldNum(ERP_AssetTable, AssetGroupId));
+    qbr_AssetGroupId.value("LOKMALAR");
+    qbr_AssetGroupId.status(RangeStatus::Hidden);
+    
+    qbr_AssetStatus = qbds_ERP_AssetTable.addRange(fieldNum(ERP_AssetTable, AssetStatus));
+    qbr_AssetStatus.value("Aktif");
+    qbr_AssetStatus.status(RangeStatus::Hidden);
+
+    sysTableLookup.addLookupfield(fieldNum(ERP_AssetTable, AssetId));
+    sysTableLookup.addLookupfield(fieldNum(ERP_AssetTable, AssetName));
+
+    sysTableLookup.parmQuery(query);
+    sysTableLookup.performFormLookup();
+}
