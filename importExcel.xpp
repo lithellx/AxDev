@@ -1,0 +1,68 @@
+static void importExcel(Args _args)
+{
+    SysExcelApplication application;
+    SysExcelWorkbooks   workbooks;
+    SysExcelWorkbook    workbook;
+    SysExcelWorksheets  worksheets;
+    SysExcelWorksheet   worksheet;
+    SysExcelCells       cells;
+    COMVariantType      type;
+    int                 row;
+    FileName            filename;
+    Dialog              dialog;
+    dialogfield         dfile;
+    str    100          value_1,value_2;
+    ERP_IFRS_LedgerAccountList list;
+    ;
+
+    application = SysExcelApplication::construct();
+    workbooks   = application.workbooks();
+
+    Dialog = new dialog("Select a file");
+    dialog.filenameLookupFilter(['xls,xlsx','*.xls;*.xlsx']);
+    dfile  = dialog.addField(extendedTypeStr(FileNameOpen),"File");
+    if(!dialog.run())
+        return;
+
+    filename = dfile.value();
+    if(filename == "")
+        throw error("No file name specified.");
+    try
+    {
+        workbooks.open(filename);
+    }
+    catch (Exception::Error)
+    {
+        throw error("Cannot open the file.");
+    }
+    workbook    = workbooks.item(1);
+    worksheets  = workbook.worksheets();
+    worksheet   = worksheets.itemFromNum(1);
+    cells       = worksheet.cells();
+    row = 1;
+    ttsbegin;
+    do
+    {
+        row++;
+        value_1     = cells.item(row, 1).value().bstr();
+        value_2     = cells.item(row, 2).value().bstr();
+        
+        select forupdate list where list.RecId == str2int64(value_1);
+        
+        if(list)
+        {
+            ttsBegin;
+            list.linenum = str2int(value_2);
+            list.doupdate();
+            ttsCommit;
+        }
+
+        type = cells.item(row+1, 1).value().variantType();
+    }
+    while (type != COMVariantType::VT_EMPTY);
+    ttscommit;
+    application.quit();
+
+    info("Done.");
+
+}
