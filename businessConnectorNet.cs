@@ -10,7 +10,7 @@ namespace ERP_ALP_WinTask
             try
             {
                 //Axapta ax = new Axapta();
-                //ax.Logon("RTS", "en-au", null, null);
+                //ax.Logon("AAA", "en-au", null, null);
 
                 //object result = ax.CallStaticClassMethod("className", "methodName", "paramStrList"); // CallStaticClassMethod for static methods
                 //Console.WriteLine("Result: " + result.ToString());
@@ -18,7 +18,7 @@ namespace ERP_ALP_WinTask
                 //ax.Logoff();
 
                 Axapta ax = new Axapta();
-                ax.Logon("RTS", "en-au", null, null);
+                ax.Logon("AAA", "en-au", null, null);
 
                 AxaptaObject obj = ax.CreateAxaptaObject("ERP_AmmeralBeltCSV"); // CreateAxaptaObject for instance methods
                 obj.Call("run"); // run() method
